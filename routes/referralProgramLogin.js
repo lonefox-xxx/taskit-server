@@ -2,26 +2,21 @@ const Database = require("../database/mongodb");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const jwtSecret = process.env.JSONWEBTOKEN_SECRET;
+const jwtSecret = process.env.REFERRAL_PROGRAM_JSONWEBTOKEN_SECRET;
 const db = new Database();
 
-async function Login(req, res) {
+async function ReferralProgramLogin(req, res) {
     try {
         const { login, password } = req.body;
 
-        if (!login || !password) {
-            return res.status(400).send({ success: false, message: 'Missing required fields' });
-        }
+        if (!login || !password) return res.status(400).send({ success: false, message: 'Missing required fields' })
 
         const query = { $or: [{ username: login }, { email: login }] };
-        const { data: userData = [] } = await db.getLogs(query, 'users');
+        const { data: userData = [] } = await db.getLogs(query, 'referralProgramUsers');
+        if (userData.length !== 1) { return res.status(400).send({ success: false, message: userData.length === 0 ? 'No user found' : 'Multiple users found' }) }
 
-        if (userData.length !== 1) {
-            return res.status(400).send({ success: false, message: userData.length === 0 ? 'No user found' : 'Multiple users found' });
-        }
-
-        const { email: userEmail, username: userName, role, permissions, password: hashedPassword } = userData[0];
-        if (!userEmail || !userName || !role || !permissions || !hashedPassword) {
+        const { email: userEmail, username: userName, password: hashedPassword } = userData[0];
+        if (!userEmail || !userName || !hashedPassword) {
             return res.status(400).send({ success: false, message: 'Invalid user data' });
         }
 
@@ -31,17 +26,15 @@ async function Login(req, res) {
         }
 
         const currentTime = new Date().getTime()
-        const payload = {
+        const tokenPayload = {
             username: userName,
             email: userEmail,
-            role,
-            permissions,
             createdAt: currentTime
         };
 
         const lastLogin = currentTime
-        const token = jwt.sign(payload, jwtSecret, { expiresIn: '12h' });
-        await db.updateLog({ data: { token, lastLogin }, id: { username: userName } }, 'users', false);
+        const token = jwt.sign(tokenPayload, jwtSecret, { expiresIn: '12h' });
+        await db.updateLog({ data: { token, lastLogin }, id: { username: userName } }, 'referralProgramUsers', false);
         res.status(200).send({ success: true, message: 'User logged in', token });
 
     } catch (error) {
@@ -50,4 +43,4 @@ async function Login(req, res) {
     }
 }
 
-module.exports = Login;
+module.exports = ReferralProgramLogin
