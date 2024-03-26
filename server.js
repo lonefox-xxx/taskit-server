@@ -21,6 +21,7 @@ app.post('/telegram-webhook', (req, res) => {
 bot.command('start', (ctx) => {
     ctx.reply('Hello! Welcome to my bot.');
 });
+// bot.telegram.setWebhook('https://api-taskit.madbotz.live//telegram-webhook')
 bot.startPolling(); 
 
 // setup databases
