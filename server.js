@@ -3,6 +3,7 @@ require('./database/redis');
 const express = require('express')
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
+const { Telegraf } = require('telegraf');
 
 const Database = require('./database/mongodb');
 const AdminAuth = require('./helper/auth');
@@ -11,6 +12,16 @@ const mongoDb = new Database()
 const app = express()
 // const port = process.env.PORT || 3000
 const port = 3000
+
+const bot = new Telegraf(process.env.BOT_TOKEN);
+app.post('/telegram-webhook', (req, res) => {
+    bot.handleUpdate(req.body);
+    res.sendStatus(200);
+});
+bot.command('start', (ctx) => {
+    ctx.reply('Hello! Welcome to my bot.');
+});
+bot.startPolling(); 
 
 // setup databases
 mongoDb.setDB()

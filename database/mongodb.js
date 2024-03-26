@@ -4,8 +4,8 @@ const mongoUser = process.env.MONGODB_USER
 const mongoPass = process.env.MONGODB_PASSWORD
 const mongodb = process.env.MONGODB_NAME
 
-
 let database
+
 class Database {
 
     // constructor() {
@@ -60,9 +60,9 @@ class Database {
     async createCollection(collectionName) {
         return await database.createCollection(collectionName);
     }
-    async countDocuments(collectionName) {
+    async countDocuments(id = {}, collectionName) {
         const collection = database.collection(collectionName);
-        const count = await collection.countDocuments();
+        const count = await collection.countDocuments(id);
         return count;
     }
 }
