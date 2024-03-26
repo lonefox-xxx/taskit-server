@@ -21,22 +21,25 @@ app.use(cors({ origin: '*' }));
 app.use(cookieParser());
 
 // Get requests
-app.get('/', (req, res) => res.cookie('ok', 'ok').send('Hello World!'))
-app.get('/getImpressions', AdminAuth, require('./routes/getImpressions'))
+app.get('/', (req, res) => res.send('everything fine'))
 app.get('/getTasks', AdminAuth, require('./routes/getTasks'))
+app.get('/getImpressions', AdminAuth, require('./routes/getImpressions'))
 app.get('/getPaymentCards', ReferralProgramAuth, require('./routes/getPaymentCard'))
+app.get('/getReferralProgramLinks', ReferralProgramAuth, require('./routes/getReferralProgramLinks'))
+app.get('/getReferralProgramTransactions', ReferralProgramAuth, require('./routes/getReferralProgramTransactions'))
+app.get('/getReferralProgramChannelsAndGroups', ReferralProgramAuth, require('./routes/getReferralProgramChannelsAndGroups'))
 
 // Post requests
-app.post('/addTask', AdminAuth, require('./routes/addTask'))
+app.post('/login', require('./routes/login'))
 app.post('/task', require('./routes/getTask'))
 app.post('/register', require('./routes/register'))
-app.post('/login', require('./routes/login'))
-app.post('/referralProgramRegister', require('./routes/referralProgramRegister'))
-app.post('/referralProgramLogin', require('./routes/referralProgramLogin'))
+app.post('/addTask', AdminAuth, require('./routes/addTask'))
 app.post('/publishTask', AdminAuth, require('./routes/publishTask'))
+app.post('/referralProgramLogin', require('./routes/referralProgramLogin'))
+app.post('/referralProgramRegister', require('./routes/referralProgramRegister'))
 app.post('/addPaymentCard', ReferralProgramAuth, require('./routes/addPaymentCard'))
-app.post('/addPartnerShipChannels', ReferralProgramAuth, require('./routes/addPaymentCard'))
 app.post('/generateChannelOrGroupToken', require('./routes/generateChannelOrGroupToken'))
+app.post('/addPartnerShipChannels', ReferralProgramAuth, require('./routes/addPaymentCard'))
 app.post('/addChannelOrGroupToken', ReferralProgramAuth, require('./routes/addChannelOrGroupToken'))
 
 // Patch requests
@@ -45,4 +48,6 @@ app.patch('/updateUserPermissions', AdminAuth, require('./routes/updateUserPermi
 
 // delete requests
 app.delete('/deletePaymentCard', ReferralProgramAuth, require('./routes/deletePaymentCard'))
+
+// start server
 app.listen(port, () => console.log(` Server running on port : ${port}!`))

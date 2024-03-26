@@ -60,6 +60,11 @@ class Database {
     async createCollection(collectionName) {
         return await database.createCollection(collectionName);
     }
+    async countDocuments(collectionName) {
+        const collection = database.collection(collectionName);
+        const count = await collection.countDocuments();
+        return count;
+    }
 }
 
 module.exports = Database;
