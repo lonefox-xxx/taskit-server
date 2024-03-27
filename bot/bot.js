@@ -1,7 +1,7 @@
 const { Telegraf, Scenes, session } = require('telegraf');
-const TgBot = new Telegraf(process.env.TEST_BOT_TOKEN);
+// const TgBot = new Telegraf(process.env.TEST_BOT_TOKEN);
+const TgBot = new Telegraf(process.env.BOT_TOKEN);
 let AddChannelsOrGroupsSene = require('./scenes/addChannelOrGroup');
-// const TgBot = new Telegraf(process.env.BOT_TOKEN);
 
 AddChannelsOrGroupsSene = AddChannelsOrGroupsSene()
 TgBot.use(session());
