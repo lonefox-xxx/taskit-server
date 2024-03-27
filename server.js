@@ -1,28 +1,17 @@
 require('dotenv').config({ path: './.env' })
 require('./database/redis');
+require('./bot/bot');
 const express = require('express')
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
-const { Telegraf } = require('telegraf');
 
 const Database = require('./database/mongodb');
 const AdminAuth = require('./helper/auth');
 const ReferralProgramAuth = require('./helper/referralProgramAuth');
 const mongoDb = new Database()
 const app = express()
-// const port = process.env.PORT || 3000
-const port = 3000
-
-const bot = new Telegraf(process.env.BOT_TOKEN);
-app.post('/telegram-webhook', (req, res) => {
-    bot.handleUpdate(req.body);
-    res.sendStatus(200);
-});
-bot.command('start', (ctx) => {
-    ctx.reply('Hello! Welcome to my bot.');
-});
-// bot.telegram.setWebhook('https://api-taskit.madbotz.live//telegram-webhook')
-bot.startPolling(); 
+const port = process.env.SERVER_PORT || 3000
+// const port = 3000
 
 // setup databases
 mongoDb.setDB()
@@ -52,6 +41,7 @@ app.post('/referralProgramRegister', require('./routes/referralProgramRegister')
 app.post('/addPaymentCard', ReferralProgramAuth, require('./routes/addPaymentCard'))
 app.post('/generateChannelOrGroupToken', require('./routes/generateChannelOrGroupToken'))
 app.post('/addPartnerShipChannels', ReferralProgramAuth, require('./routes/addPaymentCard'))
+app.post('/telegram-webhook', (req, res) => { bot.handleUpdate(req.body); res.sendStatus(200) });
 app.post('/addChannelOrGroupToken', ReferralProgramAuth, require('./routes/addChannelOrGroupToken'))
 
 // Patch requests
@@ -62,4 +52,4 @@ app.patch('/updateUserPermissions', AdminAuth, require('./routes/updateUserPermi
 app.delete('/deletePaymentCard', ReferralProgramAuth, require('./routes/deletePaymentCard'))
 
 // start server
-app.listen(port, () => console.log(` Server running on port : ${port}!`))
+app.listen(port, () => console.log(`Server running on port : ${port}!`))

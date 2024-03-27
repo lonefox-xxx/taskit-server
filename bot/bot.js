@@ -1,18 +1,12 @@
 const { Telegraf } = require('telegraf');
-const bot = new Telegraf(process.env.BOT_TOKEN);
+// const TgBot = new Telegraf(process.env.TEST_BOT_TOKEN);
+const TgBot = new Telegraf(process.env.BOT_TOKEN);
 
-function setupBot() {
 
-    // Set up your bot commands, handlers, etc.
-    bot.command('start', (ctx) => {
-        ctx.reply('Hello! Welcome to my bot.');
-    });
+TgBot.launch(() => {
+    require('./commands/commands')()
+    require('./keyboardActions/keyboardActions')()
+    console.log('bot is up and running')
+})
 
-    bot.on('text', (ctx) => {
-        // Handle incoming messages
-    });
-
-    return bot;
-}
-
-module.exports = setupBot;
+module.exports = TgBot;
