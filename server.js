@@ -42,7 +42,7 @@ app.post('/addPaymentCard', ReferralProgramAuth, require('./routes/addPaymentCar
 app.post('/generateChannelOrGroupToken', require('./routes/generateChannelOrGroupToken'))
 app.post('/addPartnerShipChannels', ReferralProgramAuth, require('./routes/addPaymentCard'))
 app.post('/telegram-webhook', (req, res) => { bot.handleUpdate(req.body); res.sendStatus(200) });
-app.post('/addChannelOrGroupToken', ReferralProgramAuth, require('./routes/addChannelOrGroupToken'))
+app.post('/connectPaymentCardWithChannelOrGroup', ReferralProgramAuth, require('./routes/connectPaymentCardWithChannelOrGroup'))
 
 // Patch requests
 app.patch('/updateTask', AdminAuth, require('./routes/updateTask'))
