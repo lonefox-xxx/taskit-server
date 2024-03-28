@@ -70,7 +70,7 @@ function AddChannelsOrGroupsSene() {
             }
             await db.addLogs(ChannelOrGroupData, 'associatedChannelsAndGroups')
 
-            await reply(`your channel/group added successfully\n\nimportant:\n• By default your channel/group is in inactive state,\n• Go to your [referral program](https://taskit-admin-client.vercel.app/referralprogram/dashboard?screen=myGroupsAndChannels) dashboard and connect with a payment card to activate this channel/group to receive updates\n\nThank you for being a part of us\n\nand Best wishes for your earnings 😊`)
+            await reply(`your channel/group added successfully\n\nimportant:\n• By default your channel/group is in inactive state,\n• Go to your [referral program](https://taskit-admin-client.vercel.app/referralprogram/dashboard?screen=myGroupsAndChannels) dashboard and connect with a payment card to activate this channel/group to receive updates\n\nThank you for being a part of us\nand Best wishes for your earnings 😊`)
 
             await ctx.scene.leave();
             require('../keyboardActions/referralProgram')(ctx)
