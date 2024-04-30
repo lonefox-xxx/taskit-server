@@ -16,6 +16,10 @@ async function UpdateTask(req, res) {
     const { data: task } = await db.getLogs({ id: id }, 'tasks')
     if (!task || task.length <= 0 || task.length > 1) return res.status(400).send({ success: false, message: 'No task found' })
 
+    if (!task[0].confirmed) {
+        delete taskParams.confirmed
+    }
+
     const updaters = [...new Set([...(task[0]?.updaters || []), _id])]
     taskParams.updaters = updaters
 
