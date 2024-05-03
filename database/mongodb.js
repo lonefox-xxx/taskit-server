@@ -9,11 +9,14 @@ let database
 class Database {
 
     setDB() {
-        MongoClient.connect(`mongodb+srv://${mongoUser}:${mongoPass}@cluster0.ywsn7md.mongodb.net/`, { useNewUrlParser: true }, (err, result) => {
-            if (err) throw err
-            var mongoDb = result.db(mongodb)
-            database = mongoDb;
-            console.log('mongoDB setup complete');
+        return new Promise((resolve, reject) => {
+            MongoClient.connect(`mongodb+srv://${mongoUser}:${mongoPass}@cluster0.ywsn7md.mongodb.net/`, { useNewUrlParser: true }, (err, result) => {
+                if (err) reject(err)
+                var mongoDb = result.db(mongodb)
+                database = mongoDb;
+                console.log('mongoDB setup complete');
+                resolve('mongoDB setup complete')
+            })
         })
     }
 
